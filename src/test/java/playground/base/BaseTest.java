@@ -26,10 +26,6 @@ public abstract class BaseTest {
     protected WebDriver getDriver() {
         return driver;
     }
-    List<String> optionalBrowser = List.of("firefox", "chrome", "edge");
-    Random random = new Random();
-    String optionalItem = optionalBrowser.get(random.nextInt(optionalBrowser.size()));
-
 
     @BeforeClass
     @Parameters("browser")
@@ -44,37 +40,16 @@ public abstract class BaseTest {
     @BeforeMethod
     public WebDriver setUp() {
 
-        switch (browser.toLowerCase()) {
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions chromeOptions = new ChromeOptions();
-<<<<<<< HEAD
-                chromeOptions.addArguments("--window-size=1920,1080");
-                chromeOptions.addArguments("--headless");
-=======
-                chromeOptions.addArguments("--headless=new");  // "--headless" if older version
-                chromeOptions.addArguments("--no-sandbox");
-                chromeOptions.addArguments("--disable-dev-shm-usage");
->>>>>>> c6211c2cb7aa29560075c9db7b0b38c7ab2e15bf
-                driver = new ChromeDriver(chromeOptions);
-                break;
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                firefoxOptions.addArguments("--width=1920");
-                firefoxOptions.addArguments("--height=1080");
-                driver = new FirefoxDriver(firefoxOptions);
-                break;
-            case "edge":
-                WebDriverManager.edgedriver().setup();
-                EdgeOptions edgeOptions = new EdgeOptions();
-                edgeOptions.addArguments("--window-size=1920,1080");
-//                edgeOptions.addArguments("--headless");
-                driver = new EdgeDriver(edgeOptions);
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported browser: " + browser);
-        }
+        WebDriverManager.chromedriver().setup();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--window-size=1920,1080");
+        chromeOptions.addArguments("--headless=new");
+        chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--disable-dev-shm-usage");
+        chromeOptions.addArguments("--disable-gpu");
+        chromeOptions.addArguments("--remote-allow-origins=*");
+
+        driver = new ChromeDriver(chromeOptions);
 
 
         driver.get("https://qaplayground.dev/");
